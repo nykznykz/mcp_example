@@ -1,8 +1,7 @@
 """Main MCP server implementation using FastMCP v2.0."""
 
-import asyncio
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from fastmcp import FastMCP
 from pydantic import BaseModel
@@ -15,11 +14,13 @@ mcp = FastMCP("Example MCP Server")
 
 class CalculateRequest(BaseModel):
     """Request model for calculate tool."""
+
     expression: str
 
 
 class GreetRequest(BaseModel):
     """Request model for greet tool."""
+
     name: str
 
 
@@ -27,10 +28,10 @@ class GreetRequest(BaseModel):
 def _calculate(expression: str) -> str:
     """
     Evaluate a mathematical expression safely.
-    
+
     Args:
         expression: A mathematical expression to evaluate (e.g., "2 + 2", "10 * 5")
-    
+
     Returns:
         The result of the calculation as a string
     """
@@ -40,7 +41,7 @@ def _calculate(expression: str) -> str:
         allowed_chars = set("0123456789+-*/.() ")
         if not all(c in allowed_chars for c in expression):
             return f"Error: Invalid characters in expression '{expression}'"
-        
+
         result = eval(expression)
         return f"The result of '{expression}' is {result}"
     except Exception as e:
@@ -50,10 +51,10 @@ def _calculate(expression: str) -> str:
 def _greet(name: str) -> str:
     """
     Generate a friendly greeting message.
-    
+
     Args:
         name: The name of the person to greet
-    
+
     Returns:
         A personalized greeting message
     """
@@ -65,10 +66,10 @@ def _greet(name: str) -> str:
 def calculate(expression: str) -> str:
     """
     Evaluate a mathematical expression safely.
-    
+
     Args:
         expression: A mathematical expression to evaluate (e.g., "2 + 2", "10 * 5")
-    
+
     Returns:
         The result of the calculation as a string
     """
@@ -79,20 +80,20 @@ def calculate(expression: str) -> str:
 def greet(name: str) -> str:
     """
     Generate a friendly greeting message.
-    
+
     Args:
         name: The name of the person to greet
-    
+
     Returns:
         A personalized greeting message
     """
     return _greet(name)
 
 
-def _get_settings() -> Dict[str, Any]:
+def _get_settings() -> dict[str, Any]:
     """
     Get server configuration settings.
-    
+
     Returns:
         A dictionary containing server settings
     """
@@ -101,14 +102,14 @@ def _get_settings() -> Dict[str, Any]:
         "version": "0.1.0",
         "capabilities": ["calculate", "greet"],
         "max_connections": 100,
-        "timeout": 30
+        "timeout": 30,
     }
 
 
-def _get_server_info() -> Dict[str, Any]:
+def _get_server_info() -> dict[str, Any]:
     """
     Get general server information.
-    
+
     Returns:
         A dictionary containing server information
     """
@@ -116,14 +117,14 @@ def _get_server_info() -> Dict[str, Any]:
         "name": "Example MCP Server",
         "description": "A sample MCP server built with FastMCP v2.0",
         "author": "MCP Developer",
-        "license": "MIT"
+        "license": "MIT",
     }
 
 
 def _help_prompt() -> str:
     """
     Provide help information about available tools and resources.
-    
+
     Returns:
         Help text describing the server's capabilities
     """
@@ -135,7 +136,7 @@ This server provides the following capabilities:
 ## Tools:
 - **calculate**: Evaluate mathematical expressions
   - Usage: calculate(expression="2 + 2")
-  
+
 - **greet**: Generate friendly greeting messages
   - Usage: greet(name="World")
 
@@ -151,10 +152,10 @@ For more information, check the server documentation.
 
 
 @mcp.resource("config://settings")
-def get_settings() -> Dict[str, Any]:
+def get_settings() -> dict[str, Any]:
     """
     Get server configuration settings.
-    
+
     Returns:
         A dictionary containing server settings
     """
@@ -162,10 +163,10 @@ def get_settings() -> Dict[str, Any]:
 
 
 @mcp.resource("info://server")
-def get_server_info() -> Dict[str, Any]:
+def get_server_info() -> dict[str, Any]:
     """
     Get general server information.
-    
+
     Returns:
         A dictionary containing server information
     """
@@ -176,7 +177,7 @@ def get_server_info() -> Dict[str, Any]:
 def help_prompt() -> str:
     """
     Provide help information about available tools and resources.
-    
+
     Returns:
         Help text describing the server's capabilities
     """
@@ -187,7 +188,7 @@ def main() -> None:
     """Main entry point for the MCP server."""
     logging.basicConfig(level=logging.INFO)
     logger.info("Starting MCP server...")
-    
+
     try:
         # Run the FastMCP server
         mcp.run()

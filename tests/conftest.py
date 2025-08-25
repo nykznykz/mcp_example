@@ -1,9 +1,9 @@
 """Pytest configuration and fixtures."""
 
-import pytest
 from unittest.mock import Mock
 
-from mcp_server.main import mcp
+import pytest
+
 from mcp_server.server import ServerConfig
 
 
